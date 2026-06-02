@@ -3,7 +3,7 @@ import PyPDF2
 import google.generativeai as genai
 #import speech_recognition as sr
 #import pyttsx3
-import cv2
+#import cv2
 from flask import *
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import gold,darkblue
