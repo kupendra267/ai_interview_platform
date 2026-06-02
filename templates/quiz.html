@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Aptitude Quiz</title>
+
+    <style>
+
+        body{
+            background:linear-gradient(to right,#141e30,#243b55);
+            font-family:Arial;
+            color:white;
+        }
+
+        .quiz-box{
+            width:70%;
+            margin:auto;
+            margin-top:40px;
+            background:rgba(255,255,255,0.08);
+            padding:40px;
+            border-radius:20px;
+        }
+
+        h1{
+            text-align:center;
+            color:#00d4ff;
+        }
+
+        .question{
+            background:rgba(255,255,255,0.05);
+            padding:20px;
+            margin-top:20px;
+            border-radius:15px;
+        }
+
+        .btn-submit{
+            width:100%;
+            height:50px;
+            margin-top:30px;
+            border:none;
+            border-radius:10px;
+            background:#00f2fe;
+            color:black;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .timer{
+            text-align:center;
+            font-size:35px;
+            color:#00ffcc;
+            margin-bottom:20px;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="quiz-box">
+
+    <div class="timer">
+        ⏳ Time Left:
+        <span id="time">60</span>s
+    </div>
+
+    <h1>Aptitude Quiz</h1>
+
+    <form method="POST">
+
+        {% for q in questions %}
+
+        <div class="question">
+
+            <h3>{{ q.question }}</h3>
+
+            {% for option in q.options %}
+
+            <input type="radio"
+                   name="{{ q.question }}"
+                   value="{{ option }}">
+
+            {{ option }}
+
+            <br><br>
+
+            {% endfor %}
+
+        </div>
+
+        {% endfor %}
+
+        <button type="submit" class="btn-submit">
+            Submit Quiz
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+
+    let time = 60;
+
+    let timer = setInterval(function(){
+
+        time--;
+
+        document.getElementById("time").innerHTML = time;
+
+        if(time <= 0){
+
+            clearInterval(timer);
+
+            document.forms[0].submit();
+
+        }
+
+    },1000);
+
+</script>
+
+</body>
+
+</html>

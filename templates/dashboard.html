@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Interview Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+            background:#0f172a;
+            color:white;
+            min-height:100vh;
+            padding:30px;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+        }
+
+        /* PROFILE CARD */
+
+        .profile-card{
+
+            background:#1e293b;
+            border-radius:25px;
+            padding:30px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:20px;
+            margin-bottom:30px;
+
+        }
+
+        .profile-left{
+
+            display:flex;
+            align-items:center;
+            gap:20px;
+
+        }
+
+        .profile-left img{
+
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            object-fit:cover;
+            border:5px solid #22d3ee;
+
+        }
+
+        .profile-info h1{
+
+            font-size:38px;
+            margin-bottom:8px;
+
+        }
+
+        .profile-info p{
+
+            color:#cbd5e1;
+            font-size:18px;
+
+        }
+
+        /* PROFILE BUTTON */
+
+        .upload-btn{
+
+            background:#22d3ee;
+            color:black;
+            padding:14px 24px;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+
+        }
+
+        .upload-btn:hover{
+
+            transform:scale(1.03);
+
+        }
+
+        /* DASHBOARD CARD */
+
+        .dashboard-card{
+
+            background:#1e293b;
+            border-radius:25px;
+            padding:30px;
+
+        }
+
+        .dashboard-card h2{
+
+            font-size:40px;
+            margin-bottom:15px;
+
+        }
+
+        /* ATS BAR */
+
+        .progress{
+
+            width:100%;
+            height:30px;
+            background:#334155;
+            border-radius:30px;
+            overflow:hidden;
+            margin-top:15px;
+            margin-bottom:30px;
+
+        }
+
+        .progress-bar{
+
+            height:100%;
+            background:linear-gradient(to right,#06b6d4,#22d3ee);
+            text-align:center;
+            line-height:30px;
+            color:black;
+            font-weight:bold;
+
+        }
+
+        /* BUTTON GRID */
+
+        .grid{
+
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:18px;
+
+        }
+
+        .btn{
+
+            text-decoration:none;
+            padding:18px;
+            border-radius:15px;
+            text-align:center;
+            color:white;
+            font-size:18px;
+            font-weight:bold;
+            transition:0.3s;
+
+        }
+
+        .btn:hover{
+
+            transform:translateY(-3px);
+
+        }
+
+        .cyan{
+            background:#06b6d4;
+        }
+
+        .green{
+            background:#22c55e;
+        }
+
+        .orange{
+            background:#f59e0b;
+        }
+
+        .red{
+            background:#ef4444;
+        }
+
+        .purple{
+            background:#8b5cf6;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:700px){
+
+            .profile-card{
+
+                flex-direction:column;
+                text-align:center;
+
+            }
+
+            .profile-left{
+
+                flex-direction:column;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PROFILE SECTION -->
+
+    <div class="profile-card">
+
+        <div class="profile-left">
+
+            {% if profile_pic %}
+
+            <img src="{{ url_for('static', filename='uploads/' + profile_pic) }}">
+
+            {% else %}
+
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+            {% endif %}
+
+            <div class="profile-info">
+
+                <h1>{{ username }}</h1>
+
+                <p>{{ email }}</p>
+
+            </div>
+
+        </div>
+
+        <!-- PROFILE UPDATE -->
+
+        <form action="/upload_profile"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <input type="file"
+                   name="profile_pic"
+                   id="profileInput"
+                   hidden
+                   onchange="this.form.submit()">
+
+            <button type="button"
+                    class="upload-btn"
+                    onclick="document.getElementById('profileInput').click()">
+
+                Update Profile
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard-card">
+
+        <h2>Welcome {{ username }}</h2>
+
+        <h3>ATS Score</h3>
+
+        <div class="progress">
+
+            <div class="progress-bar"
+                 style="width:{{ ats_score }}%">
+
+                {{ ats_score }}/100
+
+            </div>
+
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="grid">
+
+            <a href="/quiz" class="btn cyan">
+                Aptitude Quiz
+            </a>
+
+            <a href="/interview" class="btn green">
+                AI Interview
+            </a>
+
+            <a href="/chatbot" class="btn orange">
+                AI Chatbot
+            </a>
+
+            <a href="/voice_assistant" class="btn purple">
+                Voice Assistant
+            </a>
+
+            <a href="/compiler" class="btn cyan">
+                Online Compiler
+            </a>
+
+            <a href="/score_history" class="btn green">
+                Score History
+            </a>
+
+            <a href="/upload_resume" class="btn orange">
+                Upload Resume
+            </a>
+
+            <a href="/resume_analyzer" class="btn red">
+                Resume Analyzer AI
+            </a>
+
+            <a href="/leaderboard" class="btn purple">
+                Leaderboard
+            </a>
+
+            <a href="/send_certificate" class="btn cyan">
+                Send Certificate
+            </a>
+
+            <a href="/logout" class="btn red">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
