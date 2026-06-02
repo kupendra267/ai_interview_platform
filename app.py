@@ -97,28 +97,27 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        cur = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
 
-        cur.execute(
-            "SELECT * FROM users WHERE email=%s AND password=%s",
-            (email, password)
+        cursor.execute(
+            "SELECT * FROM users WHERE email=%s",
+            (email,)
         )
 
-        user = cur.fetchone()
+        user = cursor.fetchone()
 
-        if user:
+        cursor.close()
 
-            session['user'] = user[1]
-            flash("Login Successful")
+        if user and check_password_hash(user['password'], password):
 
-            return redirect('/dashboard')
+            session['user_id'] = user['id']
+            session['user_name'] = user['name']
+
+            flash("Login successful!")
+            return redirect(url_for('dashboard'))
 
         else:
-
-            return render_template(
-                'login.html',
-                message="Wrong Password"
-            )
+            flash("Invalid email or password")
 
     return render_template('login.html')
 # FORGOT PASSWORD
